@@ -1,5 +1,5 @@
 public class Amostra {
-    static int qtdIn=4, qtdOut=1, amostra= 748;
+    static int qtdIn=2, qtdOut=1, amostra= 4;
     double[] X;
     double[] Y;
 

@@ -24,7 +24,7 @@ public class MLP extends RNA {
         }
 
         for (int j = 0; j < qntH; j++) {
-            for (int i = 0; i < qntH; i++) {
+            for (int i = 0; i < qtdOut; i++) {
                 WO[j][i] = rand.nextDouble(0.06) - 0.03;
             }
         }
