@@ -14,9 +14,9 @@ public class PerceptronMain {
         int qtdOut = 1;
 
         //RNA p = new Perceptron(2, 1, 0.3);
-        RNA p = new MLP(qtdIn,2 ,qtdOut , 0.3);
+        RNA p = new MLP(qtdIn,2,qtdOut , 0.3);
         
-        for (int e = 0; e < 1000; e++) {
+        for (int e = 0; e < 10000; e++) {
             double erroEpoca = 0;
             double erroClaEpoca = 0;
 
