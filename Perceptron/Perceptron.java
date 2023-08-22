@@ -10,15 +10,15 @@ public class Perceptron extends RNA{
         this.qtdIn = qtdIn;
         this.qtdOut = qtdOut;
         this.W = new double[qtdIn+1][qtdOut];
+        this.ni = ni;
         Random rand = new Random();
 
         // Gerar aletorio os primeiros
         for(int j=0; j < qtdIn;j++){
             for(int i=0; i <qtdOut;i++){
-                W[j][i] = rand.nextDouble(0.06) - 0.03;
+                W[j][i] = Math.random() * 0.6 - 0.3;
             }
         }
-        this.ni = ni;
 
     }
 
@@ -42,7 +42,7 @@ public class Perceptron extends RNA{
                 u += X[i]*W[i][j];
             }
 
-            teta[j] = 1/(1+Math.pow(2.71, (-u))); 
+            teta[j] = 1/(1+Math.exp(-u)); 
         }
 
         for(int j=0; j < Y.length;j++){

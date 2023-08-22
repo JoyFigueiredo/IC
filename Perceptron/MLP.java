@@ -14,18 +14,18 @@ public class MLP extends RNA {
         this.WH = new double[qtdIn + 1][qntH];
         this.WO = new double[qntH + 1][qtdOut];
 
-        Random rand = new Random();
+        //Random rand = new Random();
 
         // Gerar aletorio os primeiros
         for (int j = 0; j < qtdIn; j++) {
             for (int i = 0; i < qntH; i++) {
-                WH[j][i] = rand.nextDouble(0.06) - 0.03;
+                WH[j][i] = Math.random() * 0.6 - 0.3;
             }
         }
 
         for (int j = 0; j < qntH; j++) {
             for (int i = 0; i < qtdOut; i++) {
-                WO[j][i] = rand.nextDouble(0.06) - 0.03;
+                WO[j][i] = Math.random() * 0.6 - 0.3;
             }
         }
 
