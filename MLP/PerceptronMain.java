@@ -10,13 +10,13 @@ public class PerceptronMain {
     private static Amostra[] base;
     public static void main(String[] args) {
         base = ReaderWriter.aux.readWindow();
-        int qtdIn = 2;
+        int qtdIn = 4;
         int qtdOut = 1;
 
-        //RNA p = new Perceptron(2, 1, 0.3);
-        RNA p = new MLP(qtdIn,2,qtdOut , 0.3);
+        //RNA p = new Perceptron(4, 1, 0.000001);
+        RNA p = new MLP(qtdIn,4,qtdOut , 0.0001);
         
-        for (int e = 0; e < 10000; e++) {
+        for (int e = 0; e < 100000; e++) {
             double erroEpoca = 0;
             double erroClaEpoca = 0;
 
