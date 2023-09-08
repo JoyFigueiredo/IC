@@ -106,7 +106,7 @@ public class MLP extends RNA {
     }
 
     @Override
-    public double[] executar(double[] Xin) {
+    public double[] teste(double[] Xin, double[] Y) {
         double[] X = new double[Xin.length + 1];
         // System.arraycopy(Xin, 0, X, 0, Xin.length);
         // concat
