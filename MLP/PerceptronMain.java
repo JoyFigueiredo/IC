@@ -59,7 +59,7 @@ public class PerceptronMain {
         RNA p = new MLP(qtdIn, 2, qtdOut, 0.0001);
         
 
-        for (int e = 0; e < 100000; e++) {
+        for (int e = 0; e < 10000; e++) {
             erroApEpocaTeste = 0;
             erroApEpocaTreino = 0;
             erroClaEpocaTeste = 0;
