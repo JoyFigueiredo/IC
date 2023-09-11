@@ -56,10 +56,10 @@ public class PerceptronMain {
         double erroClaEpocaTeste, erroClaEpocaTreino, erroApEpocaTeste, erroApEpocaTreino;
 
         // RNA p = new Perceptron(4, 1, 0.000001);
-        RNA p = new MLP(qtdIn, 2, qtdOut, 0.0001);
+        RNA p = new MLP(qtdIn, 5, qtdOut, 0.00001);
         
 
-        for (int e = 0; e < 10000; e++) {
+        for (int e = 0; e < 100000; e++) {
             erroApEpocaTeste = 0;
             erroApEpocaTreino = 0;
             erroClaEpocaTeste = 0;
@@ -121,8 +121,8 @@ public class PerceptronMain {
                 erroClaEpocaTeste += (erroCla > 0) ? 1 : 0; // maior que 0 manda 1
             }
 
-            System.out.printf("Epoca Treino: %d - erro: %f - erro Classificacao: %f \n", e, erroApEpocaTreino, erroClaEpocaTreino);
-            System.out.printf("Epoca Teste: %d - erro: %f - erro Classificacao: %f \n", e, erroApEpocaTeste, erroClaEpocaTeste);
+            System.out.printf("Epoca Treino: %d - erro: %f - erro Cla: %f  Epoca Teste: %d - erro: %f - erro Cla: %f \n", 
+                            e, erroApEpocaTreino, erroClaEpocaTreino, e, erroApEpocaTeste, erroClaEpocaTeste);
         }
     }
 }
