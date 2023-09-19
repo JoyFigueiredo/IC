@@ -20,16 +20,21 @@ public class PerceptronMain {
         base = ReaderWriter.aux.readWindow();
 
         for (int i = 0; i < base.length; i++) {
-            double[] X = base[i].X;
-            double[] Y = base[i].Y;
+
+
+            for(int j=0; j< base[i].X.length;j++){
+                double aux = (base[i].X[j])/(12500);
+                base[i].X[j] = aux;
+            }
 
             // Verifica Y
-            if (Y[Y.length - 1] == 1) {
-                baseUm.add(base[i]);
-            } else if (Y[Y.length - 1] == 0) {
-                baseZero.add(base[i]);
+            if (base[i].Y[0] == 1) {
+                baseUm.add(new Amostra(base[i].X, new double[]{0.995}));
+            } else if (base[i].Y[0] == 0) {
+                baseZero.add(new Amostra(base[i].X, new double[]{0.005}));
             }
         }
+
         /*
          * ====================================
          *          EMBARALHAR BASES
@@ -56,7 +61,7 @@ public class PerceptronMain {
         double erroClaEpocaTeste, erroClaEpocaTreino, erroApEpocaTeste, erroApEpocaTreino;
 
         // RNA p = new Perceptron(4, 1, 0.000001);
-        RNA p = new MLP(qtdIn, 5, qtdOut, 0.00001);
+        RNA p = new MLP(qtdIn, 2, qtdOut, 0.001);
         
 
         for (int e = 0; e < 100000; e++) {
@@ -96,7 +101,7 @@ public class PerceptronMain {
             }
 
             // ========================================================
-            // For de Teste
+            //                      For de Teste
             // ========================================================
             for (int a = 0; a < baseTeste.size(); a++) {
 

@@ -8,4 +8,9 @@ public class Amostra {
         this.X = new double[qtdIn];
         this.Y = new double[qtdOut];
     }
+
+    public Amostra(double[] X, double[] Y) {
+        this.X = X;
+        this.Y = Y;
+    }
 }

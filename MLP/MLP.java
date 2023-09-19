@@ -72,9 +72,14 @@ public class MLP extends RNA {
         //         Calculo dos deltas
         //======================================
         double []DO = new double[qtdOut];
-
+        int sinal = 1;
+        double erro;
         for(int j = 0;j < DO.length; j++){
-            DO[j]= saida[j]* (1-saida[j])*(Y[j]-saida[j]);
+            erro = Math.pow((Y[j]-saida[j]),2);
+            if((Y[j]-saida[j])<0){
+                sinal = -1;
+            }
+            DO[j]= saida[j]* (1-saida[j])*(erro*sinal);
         }
 
         double []DH = new double[qntH];
