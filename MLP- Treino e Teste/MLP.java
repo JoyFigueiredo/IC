@@ -19,13 +19,13 @@ public class MLP extends RNA {
         // Gerar aletorio os primeiros
         for (int j = 0; j < qtdIn; j++) {
             for (int i = 0; i < qntH; i++) {
-                WH[j][i] = Math.random() * 0.6 - 0.3;
+                WH[j][i] = Math.random() * 0.06 - 0.03;
             }
         }
 
         for (int j = 0; j < qntH; j++) {
             for (int i = 0; i < qtdOut; i++) {
-                WO[j][i] = Math.random() * 0.6 - 0.3;
+                WO[j][i] = Math.random() * 0.06 - 0.03;
             }
         }
 
@@ -106,7 +106,7 @@ public class MLP extends RNA {
     }
 
     @Override
-    public double[] executar(double[] Xin) {
+    public double[] teste(double[] Xin, double[] Y) {
         double[] X = new double[Xin.length + 1];
         // System.arraycopy(Xin, 0, X, 0, Xin.length);
         // concat
