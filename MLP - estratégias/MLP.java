@@ -74,8 +74,10 @@ public class MLP extends RNA {
         double []DO = new double[qtdOut];
         int sinal = 1;
         double erro;
+
         for(int j = 0;j < DO.length; j++){
             erro = Math.pow((Y[j]-saida[j]),2);
+            
             if((Y[j]-saida[j])<0){
                 sinal = -1;
             }

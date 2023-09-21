@@ -21,23 +21,29 @@ public class PerceptronMain {
 
         for (int i = 0; i < base.length; i++) {
 
-
-            for(int j=0; j< base[i].X.length;j++){
-                double aux = (base[i].X[j])/(12500);
+            for (int j = 0; j < base[i].X.length; j++) {
+                double aux = (base[i].X[j]) / (12500);
                 base[i].X[j] = aux;
             }
 
             // Verifica Y
             if (base[i].Y[0] == 1) {
-                baseUm.add(new Amostra(base[i].X, new double[]{0.995}));
+                baseUm.add(new Amostra(base[i].X, new double[] { 0.995 }));
             } else if (base[i].Y[0] == 0) {
-                baseZero.add(new Amostra(base[i].X, new double[]{0.005}));
+                baseZero.add(new Amostra(base[i].X, new double[] { 0.005 }));
             }
+
         }
+        /*
+         * for(int i=0; i<10;i++){
+         * System.out.println(baseUm.get(i).toString());
+         * System.out.println(baseZero.get(i).toString());
+         * }
+         */
 
         /*
          * ====================================
-         *          EMBARALHAR BASES
+         * EMBARALHAR BASES
          * ====================================
          */
 
@@ -45,7 +51,7 @@ public class PerceptronMain {
         Collections.shuffle(baseZero);
         /*
          * ==========================================
-         *    DIVIDIR E ADD TREINO 70% E TESTE 30%
+         * DIVIDIR E ADD TREINO 70% E TESTE 30%
          * ==========================================
          */
         // sublist(inicio da sublista, termino da mesma);
@@ -61,17 +67,16 @@ public class PerceptronMain {
         double erroClaEpocaTeste, erroClaEpocaTreino, erroApEpocaTeste, erroApEpocaTreino;
 
         // RNA p = new Perceptron(4, 1, 0.000001);
-        RNA p = new MLP(qtdIn, 2, qtdOut, 0.001);
-        
+        RNA p = new MLP(qtdIn, 6, qtdOut, 0.0001);
 
-        for (int e = 0; e < 100000; e++) {
+        for (int e = 0; e < 1000; e++) {
             erroApEpocaTeste = 0;
             erroApEpocaTreino = 0;
             erroClaEpocaTeste = 0;
             erroClaEpocaTreino = 0;
 
             // ====================================
-            //          For de Treino
+            // For de Treino
             // ====================================
 
             // Base de treino 70% da base de cada classe
@@ -84,7 +89,7 @@ public class PerceptronMain {
 
                 double tetaT[] = new double[teta.length];
                 for (int i = 0; i < teta.length; i++) {
-                    tetaT[i] = (teta[i] >= 0.5) ? 1 : 0;// teta trechoud
+                    tetaT[i] = (teta[i] >= 0.5) ? 0.995 : 0.005;// teta trechoud
                 }
 
                 double erroAmostra = 0;
@@ -96,12 +101,12 @@ public class PerceptronMain {
                 }
 
                 erroApEpocaTreino += erroAmostra;
-                erroClaEpocaTreino += (erroCla > 0) ? 1 : 0; // maior que 0 manda 1
-                
+                erroClaEpocaTreino += (erroCla > 0) ? 0.995 : 0.005; // maior que 0 manda 1
+
             }
 
             // ========================================================
-            //                      For de Teste
+            // For de Teste
             // ========================================================
             for (int a = 0; a < baseTeste.size(); a++) {
 
@@ -111,7 +116,7 @@ public class PerceptronMain {
 
                 double tetaT[] = new double[teta.length];
                 for (int i = 0; i < teta.length; i++) {
-                    tetaT[i] = (teta[i] >= 0.5) ? 1 : 0;// teta trechoud
+                    tetaT[i] = (teta[i] >= 0.5) ? 0.995 : 0.005;// teta trechoud
                 }
 
                 double erroAmostra = 0;
@@ -123,11 +128,12 @@ public class PerceptronMain {
                 }
 
                 erroApEpocaTeste += erroAmostra;
-                erroClaEpocaTeste += (erroCla > 0) ? 1 : 0; // maior que 0 manda 1
+                erroClaEpocaTeste += (erroCla > 0) ? 0.995 : 0.005; // maior que 0 manda 1
             }
 
-            System.out.printf("Epoca Treino: %d - erro: %f - erro Cla: %f  Epoca Teste: %d - erro: %f - erro Cla: %f \n", 
-                            e, erroApEpocaTreino, erroClaEpocaTreino, e, erroApEpocaTeste, erroClaEpocaTeste);
+            System.out.printf(
+                    "Epoca Treino: %d - erro: %f - erro Cla: %f  Epoca Teste: %d - erro: %f - erro Cla: %f \n",
+                    e, erroApEpocaTreino, erroClaEpocaTreino, e, erroApEpocaTeste, erroClaEpocaTeste);
         }
     }
 }
