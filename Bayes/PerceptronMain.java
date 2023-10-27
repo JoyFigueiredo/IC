@@ -6,38 +6,42 @@ import java.util.HashMap;
 public class PerceptronMain {
 
     private static Amostra[] base;
+
+    /*
+    * ======================================================================
+    *                  Arrays e Vetores
+    * ======================================================================
+     */
     private static ArrayList<Amostra> baseUm = new ArrayList<>();
     private static ArrayList<Amostra> baseZero = new ArrayList<>();
+    private static ArrayList<Amostra> baseTreinoUm = new ArrayList<>();
+    private static ArrayList<Amostra> baseTreinoZero = new ArrayList<>();
     private static ArrayList<Amostra> baseTreino = new ArrayList<>();
-    private static ArrayList<Amostra> baseTeste = new ArrayList<>();
-    private static ArrayList<double> produtorio = new ArrayList<>();
+    private static ArrayList<Amostra> baseTesteUm = new ArrayList<>();
+    private static ArrayList<Amostra> baseTesteZero = new ArrayList<>();
+
+    private static double[][] mediaTreino = new double[2][4];
+    private static double[][] mediaTeste = new double[2][4];
+
+    private static double[][] DesvioTreino = new double[2][4];
+    private static double[][] DesvioTeste = new double[2][4];
+
+    private static double[] quantUmTreino = new double[4];
+    private static double[] quantZeroTreino = new double[4];
+    private static double[] quantUmTeste = new double[4];
+    private static double[] quantZeroTeste = new double[4];
 
     public static void main(String[] args) {
         base = ReaderWriter.aux.readWindow();
 
         for (int i = 0; i < base.length; i++) {
-
-            /*
-             * ==================================================
-             *                   Normalização
-             * ==================================================
-             */
-            for (int j = 0; j < base[i].X.length; j++) {
-                double aux = (base[i].X[j]) / (12500);
-                base[i].X[j] = aux;
-            }
-
-            /*
-             * ==================================================
-             *                   primeira parte 0.005
-             * ==================================================
-             */
             // Verifica Y
             if (base[i].Y[0] == 1) {
-                baseUm.add(new Amostra(base[i].X, new double[]{0.995}));
+                baseUm.add(new Amostra(base[i].X, base[i].Y));
             } else if (base[i].Y[0] == 0) {
-                baseZero.add(new Amostra(base[i].X, new double[]{0.005}));
+                baseZero.add(new Amostra(base[i].X, base[i].Y));
             }
+            baseTreino.add(new Amostra(base[i].X, base[i].Y));
 
         }
         /*
@@ -61,57 +65,38 @@ public class PerceptronMain {
          */
         // sublist(inicio da sublista, termino da mesma);
         // ja foi embaralhada;
-        baseTreino.addAll(baseUm.subList(0, (int) (0.7 * baseUm.size())));
-        baseTreino.addAll(baseZero.subList(0, (int) (0.7 * baseZero.size())));
+        baseTreinoUm.addAll(baseUm.subList(0, (int) (0.7 * baseUm.size())));
+        baseTreinoZero.addAll(baseZero.subList(0, (int) (0.7 * baseZero.size())));
 
-        baseTeste.addAll(baseUm.subList((int) (0.7 * baseUm.size()), baseUm.size()));
-        baseTeste.addAll(baseZero.subList((int) (0.7 * baseZero.size()), baseZero.size()));
+        baseTesteUm.addAll(baseUm.subList((int) (0.7 * baseUm.size()), baseUm.size()));
+        baseTesteZero.addAll(baseZero.subList((int) (0.7 * baseZero.size()), baseZero.size()));
 
         // ====================================
         // For de Treino
         // ====================================
         // Base de treino 70% da base de cada classe
         // Não Faz ajuste dos pesos e nem calculo dos deltas
-        double[][] mediaTreino = new double[2][4];
-        double[][] mediaTeste = new double[2][4];
-        
-        double[][] DesvioTreino = new double[2][4];
-        double[][] DesvioTeste = new double[2][4];
 
-        double [] quantUmTreino = new double[4];
-        double [] quantZeroTreino = new double[4];
-        double [] quantUmTeste = new double[4];
-        double [] quantZeroTeste = new double[4];
-
-        double [] resultadosTreino = new double[baseTreino.size()];
         /*
             * ====================================================
             *  Calculo de Medias
             * ====================================================
          */
-        double somaUm, somaZero;
-        int zero = 0, um = 0;
-
+        double somaUm = 0, somaZero = 0;
+        //Classe 1
         for (int i = 0; i < 4; i++) {
-            somaUm = 0;
-            somaZero = 0;
-            zero = 0;
-            um = 0;
-
-            for (int a = 0; a < baseTreino.size(); a++) {
-                if (baseTreino.get(a).Y[0] == 0) {
-                    somaZero += baseTreino.get(a).X[i];
-                    zero++;
-                } else {
-                    somaUm += baseTreino.get(a).X[i];
-                    um++;
-                }
+            for (int a = 0; a < baseTreinoZero.size(); a++) {
+                somaZero += baseTreinoZero.get(i).X[i];
             }
-            quantUmTreino[i] = um;
-            quantZeroTreino[i] = zero;
+            mediaTreino[0][i] = somaZero / baseTreinoZero.size();
+        }
 
-            mediaTreino[0][i] = somaZero / zero;
-            mediaTreino[1][i] = somaUm / um;
+        //Classe 2
+        for (int i = 0; i < 4; i++) {
+            for (int a = 0; a < baseTreinoUm.size(); a++) {
+                somaUm += baseTreinoUm.get(i).X[i];
+            }
+            mediaTreino[1][i] = somaUm / baseTreinoUm.size();
         }
 
         /*
@@ -119,56 +104,83 @@ public class PerceptronMain {
             *  Desvio Padrao
             * ====================================================
          */
+
         double somatorioUm, somatorioZero;
 
-        for (int j = 0; j < 4; j++) {
-            somatorioUm = 0;
+        for (int j = 0; j < 4; j++) { 
             somatorioZero = 0;
-            for (int i = 0; i < baseTreino.size(); i++) {
-                if (baseTreino.get(i).Y[0] == 0) {
-                    somatorioUm += (baseTreino.get(i).X[j] - mediaTreino[0][j]);
-                } else {
-                    somatorioZero += (baseTreino.get(i).X[j] - mediaTreino[1][j]);
-                }
+            
+            //Classe 1
+            for (int i = 0; i < baseTreinoZero.size(); i++) {
+                somatorioZero += (baseTreinoZero.get(i).X[j] - mediaTreino[0][j]);
             }
-            DesvioTreino[0][j] = somatorioUm;
-            DesvioTreino[1][j] = somatorioZero;
+            DesvioTreino[0][j] = Math.sqrt((Math.pow(somatorioZero, 2)/4));
+            
         }
 
+        //Classe 2
+        for (int j = 0; j < 4; j++) {
+            somatorioUm = 0;
+            for (int i = 0; i < baseTreinoUm.size(); i++) {
+                somatorioUm += (baseTreinoUm.get(i).X[j] - mediaTreino[1][j]);
+            }
+
+            DesvioTreino[1][j] = Math.sqrt((Math.pow(somatorioUm, 2)/4));
+
+        }
+
+        double[] resultadosTreinoc1 = new double[baseTreino.size()];
+        double[] resultadosTreinoc2 = new double[baseTreino.size()];
+        double[] resultadosTreino = new double[baseTreino.size()];
         /*
          * =======================================================
          *              Gaussiano + Produtorio P(x/C1)
          * =======================================================
          */
-        double result;
+        double result1 = 1;
+        double result2 = 1;
+        double aux, r;
+        int quantC1 = baseTreinoZero.size(); //0
+        int quantC2 = baseTreinoUm.size(); //0
 
+        //Classe 1
         for (int i = 0; i < baseTreino.size(); i++) {
-            double aux, r;
+            
+         result1 = 1;
+            //classe 1
             for (int j = 0; j < 4; j++) {
-                if(baseTreino.get(i).Y[0] == 0){
-                    aux = -Math.pow(baseTreino.get(i).X[j]- mediaTreino[0][j], 2)/(2*Math.pow(DesvioTreino[0][j],2));
-                    r = 2 * Math.PI * DesvioTreino[0][j];
-                }else{
-                    aux = -Math.pow(baseTreino.get(i).X[j]- mediaTreino[1][j], 2)/(2*Math.pow(DesvioTreino[1][j],2));
-                    r = 2 * Math.PI * DesvioTreino[1][j];
-                }
-                result *= Math.exp(aux)/Math.sqrt(r); 
+                aux = -(Math.pow(baseTreino.get(i).X[j] - mediaTreino[0][j], 2) / (2 * Math.pow(DesvioTreino[0][j], 2)));
+                r = 2 * Math.PI * DesvioTreino[0][j];
+                result1 = result1 * Math.exp(aux) / Math.sqrt(r);
             }
-            resultadosTreino[i] = result; 
+            result1 = result1 * (quantC1/(quantC1+quantC2));
+            resultadosTreinoc1[i] = result1; 
+        }
+            
+        for (int i = 0; i < baseTreino.size(); i++) {
+         result2 = 1;
+            //classe 1
+            for (int j = 0; j < 4; j++) {
+                aux = -(Math.pow(baseTreino.get(i).X[j] - mediaTreino[1][j], 2) / (2 * Math.pow(DesvioTreino[1][j], 2)));
+                r = 2 * Math.PI * DesvioTreino[1][j];
+                result2 = result2 * Math.exp(aux) / Math.sqrt(r);
+            }
+            result2 = result2 * (quantC2/(quantC1+quantC2));
+            resultadosTreinoc2[i] = result2;
+
         }
 
-        /*
-            *==================================================== 
-            *               Produtorio  
-            *====================================================
-         */
-        
-
-
+        for (int i = 0; i < baseTreino.size(); i++) {
+            if(resultadosTreinoc1[i] > resultadosTreinoc2[i]){
+                resultadosTreino[i] = 0;
+            }else{
+                resultadosTreino[i] = 1;
+            }
+            System.out.println(resultadosTreino[i]);
+        }
         // ========================================================
         // For de Teste
         // ========================================================
-        
     }
 
 }
