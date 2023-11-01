@@ -3,11 +3,26 @@ import java.util.Collections;
 
 public class PerceptronMain {
     /*
-     * private static double [][][] base = new double [][][]{
-     * {{0,0},{0}},
-     * {{0,1},{1}},
-     * {{1,0},{1}},
-     * {{1,1},{0}}
+     *Estimator de densidade gaussiano
+     * f(x; μ, σ) = 1 / (σ √(2π)) exp(-(x - μ)^2 / (2 σ^2))
+     * μ é a média da distribuição
+     * σ é o desvio padrão da distribuição
+     * 
+     * Estimator KDE
+     * f(x; X) = 1 / n ∑_{i=1}^n K((x - xi) / h)
+     * X é o conjunto de treinamento
+     * n é o tamanho do conjunto de treinamento
+     * K é uma função kernel
+     * h é um parâmetro de largura
+     * 
+     * Classificador bayesiano
+     * P(C | x) = P(x | C) P(C) / P(x)
+     * C é a classe
+     * x é o ponto de dados
+     * P(x | C) é a verossimilhança
+     * P(C) é a probabilidade a priori
+     * P(x) é a probabilidade da evidência
+     * 
      * };
      */
     private static Amostra[] base;
@@ -68,6 +83,7 @@ public class PerceptronMain {
 
         // RNA p = new Perceptron(4, 1, 0.000001);
         RNA p = new MLP(qtdIn, 6, qtdOut, 0.0001);
+        EstimativaGaussiana eg = new EstimativaGaussiana();
 
         for (int e = 0; e < 1000; e++) {
             erroApEpocaTeste = 0;
