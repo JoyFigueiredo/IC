@@ -178,12 +178,20 @@ public class PerceptronMain {
         int somaErro=0;
         int quantAmostraTreino = baseTreino.size();
         for (int i = 0; i < baseTreino.size(); i++) {
-            if(resultadosTreinoc1.get(i) > resultadosTreinoc2.get(i)){
-                resultadosTreino.add(0.0);
-            }else{
-                resultadosTreino.add(1.0);
+            //if(resultadosTreinoc1.get(i) > resultadosTreinoc2.get(i) && baseTreino.get(i).Y[0] != 0){
+            //    resultadosTreino.add(0.0);
+            //}else{
+            //    resultadosTreino.add(1.0);
+            //    somaErro++;
+            //}
+
+            if(resultadosTreinoc1.get(i) > resultadosTreinoc2.get(i) && baseTreino.get(i).Y[0] != 0){
                 somaErro++;
             }
+            if(resultadosTreinoc2.get(i) > resultadosTreinoc1.get(i) && baseTreino.get(i).Y[0] != 1){
+                somaErro++;
+            }
+
             //System.out.println(resultadosTreino.get(i));
         }
         System.out.println("Quantidade de amostras de treino: " + quantAmostraTreino + " -- Quantidade de Erros:  "+ somaErro);
